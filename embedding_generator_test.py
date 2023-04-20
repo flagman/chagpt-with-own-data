@@ -1,27 +1,35 @@
 import unittest
 from embedding_generator import EmbeddingGenerator
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+OPENAI_KEY = os.getenv('OPENAI_KEY')
 
 
 class TestEmbeddingGenerator(unittest.TestCase):
 
     def setUp(self):
-        # Initialize the EmbeddingGenerator with a test API key
-        self.embedding_generator = EmbeddingGenerator(
-            api_key="")
+        self.api_key = OPENAI_KEY
+        self.generator = EmbeddingGenerator(self.api_key)
 
     def test_generate_embeddings(self):
-        # Test that embeddings are generated correctly for a simple input string
-        input_text = "Hello world!"
-        embeddings = self.embedding_generator.generate_embeddings(input_text)
-        # Check that the embeddings have the expected length and type
-        self.assertEqual(len(embeddings), 1)
-        self.assertIsInstance(embeddings[0], list)
+        # Test that the method returns a list of tuples
+        text = "This is a test text."
+        embeddings = self.generator.generate_embeddings(text)
+        self.assertIsInstance(embeddings, list)
+        for emb in embeddings:
+            self.assertIsInstance(emb, tuple)
+            self.assertIsInstance(emb[0], str)
+            self.assertIsInstance(emb[1], list)
 
-    def test_generate_embeddings_large_input(self):
-        # Test that embeddings are generated correctly for a large input string
-        # with more than 1000 symbols
-        input_text = "Lorem ipsum dolor sit amet" * 100
-        embeddings = self.embedding_generator.generate_embeddings(input_text)
-        # Check that the embeddings have the expected length and type
-        self.assertEqual(len(embeddings), len(input_text)//1000 + 1)
-        self.assertIsInstance(embeddings[0], list)
+        # Test that the embeddings have the expected length
+        text = "This is a test text."
+        embeddings = self.generator.generate_embeddings(text)
+        for emb in embeddings:
+            self.assertEqual(len(emb[1]), 1536)
+
+        # Test that the method works with larger inputs
+        text = "1" * 1001
+        embeddings = self.generator.generate_embeddings(text)
+        self.assertEqual(len(embeddings), 2)
