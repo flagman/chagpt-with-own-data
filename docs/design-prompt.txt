@@ -1,0 +1,22 @@
+As an experienced software design architect.
+Your task is to design classes for the software described below, and output pythons classes structure using YAML. 
+Each yaml description, should include class description, its properties and methods. 
+
+Description: A tool that allows users to query their own data. 
+Core components: 
+1. Data Sources - downloads data from the  different sources, i.e. wikipedia, pdf file url etc and converts it to text. 
+2. Preprocessor - Cleans and preprocess the corpus of data to ensure consistency and remove irrelevant information.
+3. Embedding generator - Computes embeddings for each document or text passage in the corpus using  Open AI API . 
+4. Vector database storage -  Stores the generated embeddings in a vector database, allowing for efficient similarity searches.
+5. Prompt  generator - combines user prompt with relevant text passages to generated chatgpt prompt. 
+6. ChatGPT processor - feeds the crafted prompt to ChatGPT and obtain the generated answer.
+
+Sample workflow:
+Inputs: pdf url, user query 
+1. Using PDFDataDataSource with download pdf from url and convert it to text.
+2. Preprocess the text.
+3. Using embedding generator split the preprocessed text into chunks of 1000 characters. Generate embeddings for each chunk. Also generate embeddings for the user query. 
+4. Store generated text embeddings in the vector database storage. 
+5. Using query embedding find similar chunks in the vector database. 
+6. Generate chatgpt prompt using found chunks and  user query. 
+7. Send the prompt to chat-gpt and get response. 

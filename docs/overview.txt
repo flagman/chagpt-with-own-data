@@ -1,0 +1,9 @@
+The software is designed to be a tool that allows users to query their own data using ChatGPT. It consists of several components:
+
+Data Sources: Download data from various sources, such as Wikipedia or PDF file URLs, and convert it into text.
+Preprocessor: Clean and preprocess the corpus of data to ensure consistency and remove irrelevant information.
+Embedding Generator: Compute embeddings for each document or text passage in the corpus using the OpenAI API.
+Vector Database Storage: Store the generated embeddings in a vector database, allowing for efficient similarity searches.
+Prompt Generator: Combine user prompts with relevant text passages to generate ChatGPT prompts.
+ChatGPT Processor: Feed the crafted prompts to ChatGPT and obtain the generated answers.
+The software takes user inputs such as a PDF URL and a user query, downloads and processes the data, generates embeddings for the preprocessed text, finds similar chunks of text, creates a ChatGPT prompt, and sends the prompt to ChatGPT to get a response.

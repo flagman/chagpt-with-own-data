@@ -1,0 +1,61 @@
+- class: DataSource
+  description: Base class for data sources that downloads data and converts it to text
+  properties:
+    - name: source
+      type: str
+      description: The source of the data
+  methods:
+    - name: fetch_data
+      description: Download data from the source and convert it to text
+      output: str
+
+- class: PDFDataSource
+  description: Downloads data from a PDF file URL and converts it to text
+  inherits: DataSource
+
+- class: Preprocessor
+  description: Cleans and preprocesses the corpus of data to ensure consistency and remove irrelevant information
+  methods:
+    - name: preprocess
+      description: Preprocess the input text
+      input: str
+      output: str
+
+- class: EmbeddingGenerator
+  description: Computes embeddings for each document or text passage in the corpus using OpenAI API
+  methods:
+    - name: generate_embeddings
+      description: Generate embeddings for the input text
+      input: str
+      output: List[float]
+
+- class: VectorDatabaseStorage
+  description: Stores the generated embeddings in a vector database, allowing for efficient similarity searches
+  properties:
+    - name: database
+      type: Dict[str, List[float]]
+      description: A dictionary to store the text and its corresponding embedding
+  methods:
+    - name: store
+      description: Store the input text and its corresponding embedding
+      input: str, List[float]
+    - name: query_similar_texts
+      description: Retrieve the most similar texts to the input query using the embeddings
+      input: List[float]
+      output: List[str]
+
+- class: PromptGenerator
+  description: Combines user prompt with relevant text passages to generate ChatGPT prompt
+  methods:
+    - name: generate_prompt
+      description: Generate a ChatGPT prompt using the found chunks and user query
+      input: str, List[str]
+      output: str
+
+- class: ChatGPTProcessor
+  description: Feeds the crafted prompt to ChatGPT and obtains the generated answer
+  methods:
+    - name: get_response
+      description: Send the prompt to ChatGPT and get the response
+      input: str
+      output: str
